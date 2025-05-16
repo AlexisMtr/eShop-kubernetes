@@ -491,3 +491,10 @@ $RECYCLE.BIN/
 /playwright/.auth/
 /user.json
 .azure
+
+
+#AGE secret files
+key.txt
+**/*local*
+sandbox/
+**/*jwks.json
