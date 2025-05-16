@@ -1,0 +1,26 @@
+version: '3'
+
+tasks:
+  init:
+    desc: Initialize the shell environment
+    cmds:
+      - task: init.helm-secrets
+      - task: init.aliases
+
+  init.helm-secrets:
+    desc: Install helm plugins
+    cmds:
+      - helm plugin install https://github.com/jkroepke/helm-secrets --version v4.6.3
+    status:
+      - helm plugin list | grep -q 'secrets'
+    silent: true
+    internal: true
+
+  init.aliases:
+    desc: Initialize shell aliases
+    cmds:
+      - alias k='kubectl'
+      - alias kubectl='kubecolor'
+      - alias cat='bat --paging never --theme DarkNeon --style plain'
+    silent: true
+    internal: true

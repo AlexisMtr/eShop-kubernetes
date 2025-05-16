@@ -1,0 +1,24 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.14.2/.schema/devbox.schema.json",
+  "packages": [
+    "octant@0.25.1",
+    "go-task@3.41.0",
+    "kubernetes-helm@3.17.3",
+    "azure-cli@2.71.0",
+    "kubectl@1.32.3",
+    "kubecolor@0.5.0",
+    "k9s@latest",
+    "bat@0.25.0",
+    "jq@latest",
+    "yq@latest",
+    "age@1.2.1",
+    "sops@3.10.1",
+    "ansible@latest"
+  ],
+  "shell": {
+    "init_hook": [
+      "task init"
+    ],
+    "scripts": {}
+  }
+}
