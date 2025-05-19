@@ -7,3 +7,10 @@ spec:
   instances: 1
   storage:
     size: 1Gi
+  affinity:
+    nodeSelector:
+      node-role.kubernetes.io/persistance: ""
+    tolerations:
+      - key: node-role.kubernetes.io/persistance
+        operator: Exists
+        effect: NoSchedule

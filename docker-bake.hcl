@@ -134,6 +134,23 @@ target "WebApp" {
   ]
 }
 
+target "cnpg_vector" {
+  dockerfile-inline = <<EOF
+FROM ghcr.io/cloudnative-pg/postgresql:17.4
+USER root
+
+RUN apt update; \
+    apt install postgresql-17-pgvector -y; \
+    rm -fr /tmp/* ; \
+    rm -rf /var/lib/apt/lists/*;
+
+USER 26
+EOF
+  tags = [
+    "${DOCKER_REGISTRY}/docker/postgresql:17.4-pgvector"
+  ]
+}
+
 group "default" {
   targets = [
     "Basket",
