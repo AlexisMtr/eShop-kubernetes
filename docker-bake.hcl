@@ -1,5 +1,5 @@
 variable "TAG"  {
-  default = "latest"
+  default = "wolfy"
 }
 
 variable "DOCKER_REGISTRY" {
@@ -8,6 +8,14 @@ variable "DOCKER_REGISTRY" {
 
 variable "BUILD_CONFIGURATION" {
   default = "Release"
+}
+
+variable "DOTNET_9_BASE" {
+  default = "mcr.microsoft.com/dotnet/aspnet:9.0"
+}
+
+variable "DONET_9_WOLFY" {
+  default = "cgr.dev/chainguard/aspnet-runtime:latest@sha256:408222a69d6369710188788c4282949ac52154a36454f5ae9e8552170aeecba1"
 }
 
 target "_eshop_base" {
@@ -20,6 +28,7 @@ target "_eshop_base" {
     shared = "./src/Shared/"
     rabbit = "./src/EventBusRabbitMQ/"
     eventbus = "./src/EventBus/"
+    "${DOTNET_9_BASE}" = "docker-image://${DONET_9_WOLFY}"
   }
 }
 
@@ -40,6 +49,7 @@ target "Identity" {
     dotnetassets = "."
     servicedefaults = "./src/eShop.ServiceDefaults/"
     shared = "./src/Shared/"
+    "${DOTNET_9_BASE}" = "docker-image://${DONET_9_WOLFY}"
   }
   args = {
     BUILD_CONFIGURATION = "${BUILD_CONFIGURATION}"
