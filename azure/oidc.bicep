@@ -6,8 +6,6 @@ param owner string
 param purpose string
 param tags object = {}
 
-param jwksPath string
-
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: 'oidc${replace(purpose, '-', '')}${replace(owner, '-', '')}${replace(randomSuffix, '-', '')}'
   location: location

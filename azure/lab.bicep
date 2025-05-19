@@ -71,7 +71,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   properties: {
     addressSpace: {
       addressPrefixes: [
-        '10.0.1.0/27'
+        '10.0.0.0/16'
       ]
     }
   }
@@ -79,7 +79,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2024-05-01' = {
   resource defaultSubnet 'subnets@2024-05-01' = {
     name: 'subnet-${purpose}-${owner}-${randomSuffix}'
     properties: {
-      addressPrefix: '10.0.1.0/28'
+      addressPrefix: '10.1.0.0/24'
     }
   }
 }
@@ -324,6 +324,12 @@ resource controlPlaneVMSS 'Microsoft.Compute/virtualMachineScaleSets@2024-11-01'
     tier: 'Standard'
     name: controlPlaneNodeSize
   }
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${workloadIdentity.id}': {}
+    }
+  }
   properties: {
     orchestrationMode: 'Flexible'
     upgradePolicy: {
@@ -331,6 +337,7 @@ resource controlPlaneVMSS 'Microsoft.Compute/virtualMachineScaleSets@2024-11-01'
     }
     platformFaultDomainCount: 1
     virtualMachineProfile: {
+      
       osProfile: {
         computerNamePrefix: '${purpose}-${owner}-${randomSuffix}'
         adminUsername: username
