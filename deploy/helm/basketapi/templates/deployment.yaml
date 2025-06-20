@@ -48,8 +48,16 @@ spec:
             - secretRef:
                 name: {{ include "basketapi.fullname" . }}-secrets
           env:
+            - name: OTEL_SERVICE_NAME
+              value: {{ include "basketapi.fullname" . }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otlp.otlpEndpoint | default "http://localhost:4317" }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.otlp.protocol | default "grpc" }}
             - name: Identity__Audience
               value: basket
+            - name: Identity__Url
+              value: {{ .Values.identity }}
           {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}

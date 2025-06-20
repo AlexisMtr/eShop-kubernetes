@@ -121,3 +121,7 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+otlp:
+  otlpEndpoint: "eshop-collector.observability.svc.cluster.local:4317"
+  protocol: "grpc"

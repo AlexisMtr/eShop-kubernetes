@@ -44,6 +44,13 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: {{ include "catalogapi.fullname" . }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otlp.otlpEndpoint | default "http://localhost:4317" }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.otlp.protocol | default "grpc" }}
           envFrom:
             - secretRef:
                 name: {{ include "catalogapi.fullname" . }}-secrets

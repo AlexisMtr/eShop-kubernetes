@@ -126,3 +126,7 @@ eventBus:
   connectionString: ""
 redis:
   connectionString: ""
+
+otlp:
+  otlpEndpoint: ""
+  protocol: grpc

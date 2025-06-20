@@ -45,6 +45,12 @@ spec:
               containerPort: {{ .Values.service.port }}
               protocol: TCP
           env:
+            - name: OTEL_SERVICE_NAME
+              value: {{ include "webapp.fullname" . }}
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.otlp.otlpEndpoint | default "http://localhost:4317" }}
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: {{ .Values.otlp.protocol | default "grpc" }}
             {{- range $key, $value := .Values.api }}
             - name: Services__{{ $key }}-api__http__0
               value: {{ $value }}
@@ -52,7 +58,7 @@ spec:
             - name: IdentityUrl
               value: {{ .Values.identity }}
             - name: CallBackUrl
-              value: "http://localhost:8080/callback"
+              value: {{ printf "https://%s" (index .Values.ingress.hosts 0).host | default .Values.CallBackUrl }}
           envFrom:
             - secretRef:
                 name: {{ include "webapp.fullname" . }}-secrets

@@ -27,6 +27,9 @@ builder.Services.AddIdentityServer(options =>
 
     // TODO: Remove this line in production.
     options.KeyManagement.Enabled = false;
+
+    // Dundee require payed license for this feature
+    options.Endpoints.EnablePushedAuthorizationEndpoint = false;
 })
 .AddInMemoryIdentityResources(Config.GetResources())
 .AddInMemoryApiScopes(Config.GetApiScopes())
@@ -47,7 +50,7 @@ app.MapDefaultEndpoints();
 app.UseStaticFiles();
 
 // This cookie policy fixes login issues with Chrome 80+ using HTTP
-app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
+app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax, Secure = CookieSecurePolicy.SameAsRequest });
 app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthorization();

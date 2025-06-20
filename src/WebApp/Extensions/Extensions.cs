@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.Extensions.AI;
 using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Logging;
 using OllamaSharp;
 using OpenAI;
 
@@ -55,6 +56,7 @@ public static class Extensions
 
     public static void AddAuthenticationServices(this IHostApplicationBuilder builder)
     {
+        IdentityModelEventSource.ShowPII = true;
         var configuration = builder.Configuration;
         var services = builder.Services;
 
@@ -87,6 +89,15 @@ public static class Extensions
             options.Scope.Add("profile");
             options.Scope.Add("orders");
             options.Scope.Add("basket");
+            options.CallbackPath = "/signin-oidc";
+            options.Events = new OpenIdConnectEvents
+            {
+                OnRedirectToIdentityProvider = context =>
+                {
+                    context.ProtocolMessage.RedirectUri = $"{callBackUrl}/signin-oidc";
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         // Blazor auth services
